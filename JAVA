@@ -1,0 +1,341 @@
+--------------- 1. SOAL ---------------
+The program:
+The Syracuse (or Collatz) suite is defined as follows: given an initial integer greater than 0, we apply the following operations while the integer is different that 1:
+- it is divided by 2 when even,
+- it is multiplied by 3 and raised by 1 when odd.
+
+Your program must display the Syracuse suite of the number N and stop when the value 1 is reached.
+
+INPUT:
+Line 1: An integer N that starts the suite.
+OUTPUT:
+Line 1: The values of the Syracuse suite, separated by a space.
+CONSTRAINTS:
+1 ≤ N < 100
+
+EXAMPLE:
+Input
+5
+Output
+5 16 8 4 2 1
+
+
+--------------- 1. JAWAB : ---------------
+import java.util.*;
+
+class Solution {
+    public static void main(String args[]) {
+        Scanner in = new Scanner(System.in);
+        int n = in.nextInt();
+        
+        // Start building the sequence
+        List<Integer> sequence = new ArrayList<>();
+        sequence.add(n);
+        
+        while (n != 1) {
+            if (n % 2 == 0) {
+                n = n / 2;
+            } else {
+                n = 3 * n + 1;
+            }
+            sequence.add(n);
+        }
+        
+        // Print the sequence
+        for (int i = 0; i < sequence.size(); i++) {
+            System.out.print(sequence.get(i));
+            if (i < sequence.size() - 1) {
+                System.out.print(" ");
+            }
+        }
+        System.out.println();
+    }
+}
+
+
+
+--------------- 2. SOAL: ---------------
+The program:
+Two adventurers are going to duel, each of them has health points HP1 and HP2 and apply D1 and D2 damage to their opponent each round.
+
+Your program must output which adventurer will win and how many rounds are needed to end the duel.
+There is never a draw.
+
+INPUT:
+Line 1: Health points HP1 and damage D1 of the first duelist.
+Line 2: Health points HP2 and damage D2 of the second duelist.
+OUTPUT:
+Line 1: The winner's number 1 or 2 followed by how many rounds were needed to end the duel.
+CONSTRAINTS:
+0 < HP1 ≤ 10000
+0 < HP2 ≤ 10000
+0 ≤ D1 ≤ 50
+0 ≤ D2 ≤ 50
+
+EXAMPLE:
+Input
+100 1
+2 1
+Output
+1 2
+ 
+
+--------------- 2. JAWAB: ---------------
+import java.util.*;
+
+public class Solution {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        
+        // Read input
+        int HP1 = scanner.nextInt();
+        int D1 = scanner.nextInt();
+        int HP2 = scanner.nextInt();
+        int D2 = scanner.nextInt();
+        
+        // Initialize round counter
+        int rounds = 0;
+        
+        // Simulate the duel
+        while (HP1 > 0 && HP2 > 0) {
+            // Increment round count
+            rounds++;
+            
+            // Player 1 attacks Player 2
+            HP2 -= D1;
+            
+            // Check if Player 2 is defeated
+            if (HP2 <= 0) {
+                System.out.println("1 " + rounds);
+                return;
+            }
+            
+            // Player 2 attacks Player 1
+            HP1 -= D2;
+            
+            // Check if Player 1 is defeated
+            if (HP1 <= 0) {
+                System.out.println("2 " + rounds);
+                return;
+            }
+        }
+        // This line should not be reached due to the constraints (there is always a winner)
+        scanner.close();
+    }
+}
+
+
+
+--------------- 3. SOAL: ---------------
+The program:
+Given the coordinates of the points 1 and 2, fill the grid of the given size in order to demonstrate which of the two points is the closest to each cell. We will use the Manhattan distance: d(A, B) = abs(Ax - Bx) + abs(Ay - By).
+
+Print a grid that contains, for each cell, the following character:
+- 'X' if one of the two given points is in the cell
+- '0' if the cell is equidistant to the two points
+- '1' if the closest point to the cell is point 1
+- '2' if the closest point to the cell is point 2
+
+INPUT:
+Line 1 : two space separated integers giving the width and the height of the grid.
+Line 2 : two space separated integers giving the coordinates of point 1.
+Line 3 : two space separated integers giving the coordinates of point 2.
+
+OUTPUT:
+A grid of height rows and width columns.
+
+CONSTRAINTS:
+1 < width, height ≤ 200
+0 ≤ x1, y1, x2, y2 < 200
+
+EXAMPLE:
+Input
+10 10
+4 5
+8 7
+Output
+1111111022
+1111111022
+1111111022
+1111111022
+1111111022
+1111X11022
+1111110222
+11111022X2
+1111102222
+1111102222
+ 
+
+--------------- JAWAB: ---------------
+import java.util.*;
+
+public class Solution {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        
+        // Step 1: Read input
+        int width = scanner.nextInt();
+        int height = scanner.nextInt();
+        int x1 = scanner.nextInt();
+        int y1 = scanner.nextInt();
+        int x2 = scanner.nextInt();
+        int y2 = scanner.nextInt();
+        
+        // Step 2: Initialize the grid
+        char[][] grid = new char[height][width];
+        
+        // Step 3: Fill the grid based on distances
+        for (int row = 0; row < height; row++) {
+            for (int col = 0; col < width; col++) {
+                int dist1 = Math.abs(row - y1) + Math.abs(col - x1);
+                int dist2 = Math.abs(row - y2) + Math.abs(col - x2);
+                
+                if (dist1 < dist2) {
+                    grid[row][col] = '1';  // Point 1 is closer
+                } else if (dist2 < dist1) {
+                    grid[row][col] = '2';  // Point 2 is closer
+                } else {
+                    grid[row][col] = '0';  // Equidistant to both points
+                }
+            }
+        }
+        
+        // Step 4: Mark the exact positions of the points 'X' in the grid
+        grid[y1][x1] = 'X';
+        grid[y2][x2] = 'X';
+        
+        // Step 5: Output the grid
+        for (int row = 0; row < height; row++) {
+            for (int col = 0; col < width; col++) {
+                System.out.print(grid[row][col]);
+            }
+            System.out.println();
+        }
+        
+        scanner.close();
+    }
+}
+
+
+--------------- 4. SOAL: ---------------
+ Goal
+Sometimes when you wash your clothes a sock disappears!
+
+Now you are in front of your washing machine and you empty it. While emptying you want to know if you have any lost socks and which ones they are.
+~~~~~~~~~~ Input ~~~~~~~~~~
+Line 1: n the number of clothes and underwear in the washing machine.
+Next n lines: clothes type clothes size clothes color a string, an int, and a string.
+
+Socks have the sock clothes type.
+Pants have the pants clothes type.
+T-Shirts have the t-shirt clothes type.
+And so on...
+
+Two socks form a pair if they are if they have the same clothes type, clothes size, and clothes color.
+
+Any sock coming out of the washing machine that is not part of a pair indicates that you have lost that other sock.
+~~~~~~~~~~~ Output ~~~~~~~~
+First line: The number of disappeared socks.
+Then: The sock size and the sock color (separated by a space) of all missing socks separated by a new line. Nothing if all socks are back from the washing.
+Socks must be in the numerical then alphabetical order. That means socks must be sorted by their size and if they have the same size by their colors.
+
+~~~~~~~~~~~ Constraints ~~~~~~~~~~~~~
+0 ≤ n < 10
+
+~~~~~~~~~~~ Example ~~~~~~~~~~~~~
+Input
+5
+t-shirt 2 blue
+sock 42 red
+sock 42 red
+short 7 white
+sock 37 grey
+Output
+1
+37 grey
+
+--------------- 4. JAWAB: ---------------
+import java.util.*;
+
+public class Solution {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        
+        // Read the number of clothes
+        int n = 0;
+        if (scanner.hasNextInt()) {
+            n = scanner.nextInt();
+        }
+        
+        // If there are no clothes, output "0" and return
+        if (n == 0) {
+            System.out.println("0");
+            scanner.close();
+            return;
+        }
+        
+        // Consume the newline after reading the integer
+        scanner.nextLine();
+        
+        // Initialize data structures
+        Map<String, Integer> socksMap = new HashMap<>();
+        
+        // Process each piece of clothing
+        for (int i = 0; i < n; i++) {
+            String line = scanner.nextLine();
+            Scanner lineScanner = new Scanner(line);
+            String type = lineScanner.next();
+            int size = lineScanner.nextInt();
+            String color = lineScanner.nextLine().trim();
+            
+            // Check if it's a sock
+            if (type.equals("sock")) {
+                String key = size + " " + color;
+                
+                // If it's the first occurrence of this sock, add to map
+                if (!socksMap.containsKey(key)) {
+                    socksMap.put(key, 1);
+                } else {
+                    socksMap.put(key, socksMap.get(key) + 1);
+                }
+            }
+        }
+        
+        // Identify lost socks
+        List<String> lostSocks = new ArrayList<>();
+        for (String key : socksMap.keySet()) {
+            int count = socksMap.get(key);
+            
+            // If there's an odd number of socks for this type, add to lostSocks
+            if (count % 2 != 0) {
+                lostSocks.add(key);
+            }
+        }
+        
+        // Sort lost socks by size and then by color
+        Collections.sort(lostSocks, new Comparator<String>() {
+            @Override
+            public int compare(String sock1, String sock2) {
+                String[] parts1 = sock1.split(" ");
+                String[] parts2 = sock2.split(" ");
+                
+                // Compare by size
+                int size1 = Integer.parseInt(parts1[0]);
+                int size2 = Integer.parseInt(parts2[0]);
+                if (size1 != size2) {
+                    return size1 - size2;
+                }
+                
+                // Compare by color
+                return parts1[1].compareTo(parts2[1]);
+            }
+        });
+        
+        // Output the result
+        System.out.println(lostSocks.size());
+        for (String sock : lostSocks) {
+            System.out.println(sock);
+        }
+        scanner.close();
+    }
+}
